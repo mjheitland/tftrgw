@@ -141,13 +141,19 @@ resource "aws_security_group" "sgpub2" {
   name        = "sgpub2"
   description = "Used for access to the public instances"
   vpc_id      = aws_vpc.vpc2.id
-  ingress {
+  ingress { # allow ping
+    from_port = 8
+    to_port = 0
+    protocol = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress { # allow ssh
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  ingress {
+  ingress { # allow http
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
