@@ -18,9 +18,9 @@ module "compute" {
   key_name        = var.key_name
   public_key_path = var.public_key_path
 
-  subpub1_ids     = module.networking.subpub1_ids
+  subpub1_id      = module.networking.subpub1_id
   sgpub1_id       = module.networking.sgpub1_id
   
-  subpub2_ids     = module.networking.subpub2_ids
+  subpub2_id     = module.networking.subpub2_id
   sgpub2_id       = module.networking.sgpub2_id
 }

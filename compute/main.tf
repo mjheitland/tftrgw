@@ -24,7 +24,7 @@ resource "aws_instance" "server1" {
   instance_type           = "t2.micro"
   ami                     = data.aws_ami.server_ami.id
   key_name                = aws_key_pair.keypair.id
-  subnet_id               = element(var.subpub1_ids, 0)
+  subnet_id               = var.subpub1_id
   vpc_security_group_ids  = [var.sgpub1_id]
   user_data               = data.template_file.userdata1.*.rendered[0]
   tags = { 
@@ -45,7 +45,7 @@ resource "aws_instance" "server2" {
   instance_type           = "t2.micro"
   ami                     = data.aws_ami.server_ami.id
   key_name                = aws_key_pair.keypair.id
-  subnet_id               = element(var.subpub2_ids, 0)
+  subnet_id               = var.subpub2_id
   vpc_security_group_ids  = [var.sgpub2_id]
   user_data               = data.template_file.userdata2.*.rendered[0]
   tags = { 

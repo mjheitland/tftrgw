@@ -39,6 +39,10 @@ resource "aws_subnet" "subpub1" {
 resource "aws_route_table" "rtpub1" {
   vpc_id = "${aws_vpc.vpc1.id}"
   route {
+    cidr_block = "10.0.0.0/8"
+    transit_gateway_id = aws_ec2_transit_gateway.tgw.id
+  }  
+  route {
     cidr_block = "0.0.0.0/0"
     gateway_id = "${aws_internet_gateway.igw1.id}"
   }
@@ -46,12 +50,16 @@ resource "aws_route_table" "rtpub1" {
     name = format("%s_rtpub1", var.project_name)
     project_name = var.project_name
   }
+  depends_on = ["aws_ec2_transit_gateway.tgw"]  
 }
 
-# connect every public subnet with our public route table
-resource "aws_route_table_association" "rtpub1assoc" {
-  subnet_id      = "${aws_subnet.subpub1.*.id[0]}"
-  route_table_id = "${aws_route_table.rtpub1.id}"
+# Main Route Tables Associations
+## Forcing our Route Tables to be the main ones for our VPCs,
+## otherwise AWS automatically will create a main Route Table
+## for each VPC, leaving our own Route Tables as secondary
+resource "aws_main_route_table_association" "rtpub1assoc" {
+  vpc_id         = aws_vpc.vpc1.id
+  route_table_id = aws_route_table.rtpub1.id
 }
 
 resource "aws_security_group" "sgpub1" {
@@ -62,6 +70,12 @@ resource "aws_security_group" "sgpub1" {
     from_port = 8
     to_port = 0
     protocol = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 0 # the ICMP type number for 'Echo Reply'
+    to_port     = 0 # the ICMP code
+    protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
@@ -128,6 +142,10 @@ resource "aws_subnet" "subpub2" {
 resource "aws_route_table" "rtpub2" {
   vpc_id = "${aws_vpc.vpc2.id}"
   route {
+    cidr_block = "10.0.0.0/8"
+    transit_gateway_id = aws_ec2_transit_gateway.tgw.id
+  }  
+  route {
     cidr_block = "0.0.0.0/0"
     gateway_id = "${aws_internet_gateway.igw2.id}"
   }
@@ -135,12 +153,16 @@ resource "aws_route_table" "rtpub2" {
     name = format("%s_rtpub2", var.project_name)
     project_name = var.project_name
   }
+  depends_on = ["aws_ec2_transit_gateway.tgw"]  
 }
 
-# connect every public subnet with our public route table
-resource "aws_route_table_association" "rtpub2assoc" {
-  subnet_id      = "${aws_subnet.subpub2.*.id[0]}"
-  route_table_id = "${aws_route_table.rtpub2.id}"
+# Main Route Tables Associations
+## Forcing our Route Tables to be the main ones for our VPCs,
+## otherwise AWS automatically will create a main Route Table
+## for each VPC, leaving our own Route Tables as secondary
+resource "aws_main_route_table_association" "rtpub2assoc" {
+  vpc_id         = aws_vpc.vpc2.id
+  route_table_id = aws_route_table.rtpub2.id
 }
 
 resource "aws_security_group" "sgpub2" {
@@ -151,6 +173,12 @@ resource "aws_security_group" "sgpub2" {
     from_port = 8
     to_port = 0
     protocol = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 0 # the ICMP type number for 'Echo Reply'
+    to_port     = 0 # the ICMP code
+    protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
   }
   ingress { # allow ssh
@@ -174,6 +202,35 @@ resource "aws_security_group" "sgpub2" {
 
   tags = { 
     name = format("%s_sgpub2", var.project_name)
+    project_name = var.project_name
+  }
+}
+
+## The default setup being a full mesh scenario where all VPCs can see every other
+resource "aws_ec2_transit_gateway" "tgw" {
+  description                     = "Transit Gateway in default setup connecting all attached VPCs in a full mesh"
+  tags                            = {
+    name = format("%s_tgw", var.project_name)
+    project_name = var.project_name
+  }
+}
+resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-attachment-1" {
+  subnet_ids         = [aws_subnet.subpub1.id]
+  transit_gateway_id = aws_ec2_transit_gateway.tgw.id
+  vpc_id             = aws_vpc.vpc1.id
+
+  tags = { 
+    name = format("%s_tgw-attachment-1", var.project_name)
+    project_name = var.project_name
+  }
+}
+resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-attachment-2" {
+  subnet_ids         = [aws_subnet.subpub2.id]
+  transit_gateway_id = aws_ec2_transit_gateway.tgw.id
+  vpc_id             = aws_vpc.vpc2.id
+
+  tags = { 
+    name = format("%s_tgw-attachment-2", var.project_name)
     project_name = var.project_name
   }
 }

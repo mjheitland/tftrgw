@@ -1,6 +1,7 @@
 This Terraform project shows how to specify and deploy the following components:
 + 1 keypair (first you have to run ssh-keygen in your home folder)
-+ 2 VPCs (each one with 1 internet gateway, 1 public subnet, 1 public security group, 1 public route table with its route table association and 1 ec2 instance)
++ 2 VPCs (each one with 1 internet gateway, 1 public subnet, 1 public security group allowing ssh, ping and icmp, 1 public route table with its main route table association and 1 ec2 instance)
++ 1 transit gateway with two transit gateway attachments (which connect a vpc subnet with the transit gateway)
 
 ## in .zshrc
 

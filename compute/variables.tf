@@ -11,18 +11,18 @@ variable "public_key_path" {
   description = "file path on deployment machine to public rsa key to access ec2 instances"
   type        = string
 }
-variable "subpub1_ids" {
-  description = "ids of public subnets"
-  type        = list(string)
+variable "subpub1_id" {
+  description = "id of public subnets"
+  type        = string
 }
 variable "sgpub1_id" {
   description = "id of security group"
   type        = string
 }
 
-variable "subpub2_ids" {
-  description = "ids of public subnets"
-  type        = list(string)
+variable "subpub2_id" {
+  description = "id of public subnets"
+  type        = string
 }
 variable "sgpub2_id" {
   description = "id of security group"

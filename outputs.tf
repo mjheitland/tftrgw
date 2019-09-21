@@ -10,14 +10,14 @@ output "vpc1_id" {
 output "igw1_id" {
   value = module.networking.igw1_id
 }
-output "subpub1_ids" {
-  value = module.networking.subpub1_ids
+output "subpub1_id" {
+  value = module.networking.subpub1_id
 }
 output "sgpub1_id" {
   value = module.networking.sgpub1_id
 }
-output "rtpub1_ids" {
-  value = module.networking.rtpub1_ids
+output "rtpub1_id" {
+  value = module.networking.rtpub1_id
 }
 output "rtpub1assoc_id" {
   value = module.networking.rtpub1assoc_id
@@ -28,14 +28,14 @@ output "vpc2_id" {
 output "igw2_id" {
   value = module.networking.igw2_id
 }
-output "subpub2_ids" {
-  value = module.networking.subpub2_ids
+output "subpub2_id" {
+  value = module.networking.subpub2_id
 }
 output "sgpub2_id" {
   value = module.networking.sgpub2_id
 }
-output "rtpub2_ids" {
-  value = module.networking.rtpub2_ids
+output "rtpub2_id" {
+  value = module.networking.rtpub2_id
 }
 output "rtpub2assoc_id" {
   value = module.networking.rtpub2assoc_id
