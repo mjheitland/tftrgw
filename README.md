@@ -3,12 +3,6 @@ This Terraform project shows how to specify and deploy the following components:
 + 2 VPCs (each one with 1 internet gateway, 1 public subnet, 1 public security group allowing ssh, ping and icmp, 1 public route table with its main route table association and 1 ec2 instance)
 + 1 transit gateway with two transit gateway attachments (which connect a vpc subnet with the transit gateway)
 
-## in .zshrc
-
-    export AWS_ACCESS_KEY_ID="xxx"
-    export AWS_SECRET_ACCESS_KEY="xxx"
-    export AWS_DEFAULT_REGION="eu-central-1"
-
 ## generate a keypair to access EC2 instances
 
     ssh-keygen
